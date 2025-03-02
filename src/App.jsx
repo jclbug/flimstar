@@ -1,6 +1,7 @@
 import { use, useEffect, useState } from "react";
 
 const apiKey = "698ee22d";
+// http://www.omdbapi.com/?i=tt3896198&apikey=698ee22d
 
 export default function App() {
     const [totalMovie, setTotalMovie] = useState(0);
@@ -61,7 +62,7 @@ function ResultList({
                     if (query.length > 2) {
                         setIsLoading(true);
                         const res = await fetch(
-                            `http://www.omdbapi.com/?apikey=${apiKey}&s=${query}`,
+                            `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}`,
                             { signal: requestAbort.signal }
                         );
 
@@ -81,7 +82,7 @@ function ResultList({
                     setMovieNotFound(true);
                 }
             }
-            fetchMovie("how");
+            fetchMovie(query || "how to train your dragon");
 
             return function () {
                 requestAbort.abort();
@@ -90,7 +91,7 @@ function ResultList({
         [query]
     );
     return (
-        <ul className="bg-[var(--color-background-500)] rounded-lg w-full overflow-scroll max-h-screen h-full ">
+        <ul className="bg-[var(--color-background-500)] rounded-lg w-full overflow-auto scrollbar-hidden max-h-screen h-full ">
             {movieArray &&
                 movieArray.map((film) => (
                     <Movie
@@ -165,7 +166,7 @@ function WatchListMovies({ watchlistedMovie, onSetWatchlistedMovie }) {
     console.log(watchlistedMovie);
 
     return (
-        <ul className="bg-[var(--color-background-500)] rounded-lg w-full overflow-scroll h-[88%]">
+        <ul className="bg-[var(--color-background-500)] rounded-lg w-full overflow-scroll scrollbar-hidden h-[88%]">
             {watchlistedMovie.map((movie) => (
                 <Movie key={movie.imdbID} movie={movie}>
                     <img
@@ -197,7 +198,7 @@ function MovieInfo({
     const [hover, setHover] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [movieData, setMovieData] = useState({});
-    const [prevID, setPrevID] = useState(null);
+    const [prevID, setPrevID] = useState("");
     const [watchlist, setWatchlist] = useState(false);
     const [watched, setWatched] = useState(false);
 
@@ -208,7 +209,7 @@ function MovieInfo({
                 console.log(prevID);
                 setIsLoading(true);
                 const res = await fetch(
-                    `http://www.omdbapi.com/?apikey=${apiKey}&i=${id}`
+                    `https://www.omdbapi.com/?apikey=${apiKey}&i=${id}`
                 );
                 const data = await res.json();
                 setMovieData(data);
@@ -222,8 +223,11 @@ function MovieInfo({
     );
 
     // setting browser tab title on movie open
+
     document.title =
-        selectedMovieID == prevID ? "Movie | " + movieData.Title : "Flimstr";
+        selectedMovieID === prevID && selectedMovieID !== null
+            ? "Movie | " + movieData.Title
+            : "Flimstr";
 
     useEffect(() => {
         if (watchlistedMovie.some((m) => m.imdbID === selectedMovieID))
@@ -253,14 +257,6 @@ function MovieInfo({
     }
 
     function handleWatchedOrNot() {
-        if (
-            watchlistedMovie.some(
-                (m) => m.imdbID === movieData.imdbID && m.isWatched
-            )
-        ) {
-        } else {
-        }
-
         if (!watched) {
             watchlistedMovie.map((m) => {
                 if (m.imdbID === movieData.imdbID) {
@@ -275,7 +271,7 @@ function MovieInfo({
 
     return (
         <div
-            className={`h-full w-full bg-(--color-background-500) flex flex-col gap-15 h-full absolute top-0 ${hideMovieInfo} duration-400`}
+            className={`overflow-scroll scrollbar-hidden h-full w-full bg-(--color-background-500) flex flex-col gap-15 h-full absolute top-0 ${hideMovieInfo} duration-400`}
         >
             {isLoading ? (
                 <LoadingMsg message={"Loading..."} />
@@ -355,7 +351,7 @@ function MovieInfo({
                             </button>
                         </div>
                     </div>
-                    <div className="p-[48px] pt-0 text-xl overflow-scroll h-full">
+                    <div className="p-[48px] pt-0 text-xl h-full">
                         {movieData.Plot}
                     </div>
                 </>
