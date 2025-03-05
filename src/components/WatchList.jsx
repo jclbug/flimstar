@@ -4,13 +4,15 @@ import WatchListMovies from "./WatchListMovies";
 import MovieInfo from "./MovieInfo";
 
 export default function WatchList({
+  rate,
   apiKey,
   selectedMovieID,
   onSetSelectedMovieID,
+  setRate,
 }) {
   const [hideMovieInfo, setHideMovieInfo] = useState("left-full");
   const [watchlistedMovie, setWatchlistedMovie] = useState([]);
-  const [movieInWatchlist, setMovieInWatchlist] = useState(0);
+  const [countMovieInWatchlist, setCountMovieInWatchlist] = useState(0);
 
   useEffect(
     function () {
@@ -18,19 +20,20 @@ export default function WatchList({
         ? setHideMovieInfo("left-0")
         : setHideMovieInfo("left-full");
 
-      setMovieInWatchlist(watchlistedMovie.length);
+      setCountMovieInWatchlist(watchlistedMovie.length);
     },
     [selectedMovieID, watchlistedMovie]
   );
 
   return (
     <div className="relative bg-[var(--color-background-500)] rounded-lg w-full overflow-hidden max-h-screen h-full ">
-      <WatchListHead movieInWatchlist={movieInWatchlist} />
+      <WatchListHead countMovieInWatchlist={countMovieInWatchlist} />
       <WatchListMovies
         watchlistedMovie={watchlistedMovie}
         onSetWatchlistedMovie={setWatchlistedMovie}
       />
       <MovieInfo
+        rate={rate}
         apiKey={apiKey}
         watchlistedMovie={watchlistedMovie}
         hideMovieInfo={hideMovieInfo}
@@ -38,6 +41,7 @@ export default function WatchList({
         selectedMovieID={selectedMovieID}
         onSetSelectedMovieID={onSetSelectedMovieID}
         onSetWatchlistedMovie={setWatchlistedMovie}
+        setRate={setRate}
       />
     </div>
   );

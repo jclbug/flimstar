@@ -9,6 +9,7 @@ export default function App() {
   const [totalMovie, setTotalMovie] = useState(0);
   const [query, setQuery] = useState("");
   const [selectedMovieID, setSelectedMovieID] = useState(null);
+  // const [rate, setRate] = useState("");
 
   return (
     <div className="flex flex-col gap-5 h-screen text-(--normal-text)">
@@ -22,9 +23,11 @@ export default function App() {
           onSetSelectedMovieID={setSelectedMovieID}
         />
         <WatchList
+          // rate={rate}
           apiKey={apiKey}
           selectedMovieID={selectedMovieID}
           onSetSelectedMovieID={setSelectedMovieID}
+          // setRate={setRate}
         />
       </div>
     </div>
