@@ -11,7 +11,8 @@ export default function WatchList({
   setRate,
 }) {
   const [hideMovieInfo, setHideMovieInfo] = useState("left-full");
-  const [watchlistedMovie, setWatchlistedMovie] = useState([]);
+  const [watchlistedMovie, setWatchlistedMovie] = useState({});
+  // const [watchlistedMovie, setWatchlistedMovie] = useState([]); // 1
   const [countMovieInWatchlist, setCountMovieInWatchlist] = useState(0);
 
   useEffect(
@@ -27,7 +28,10 @@ export default function WatchList({
 
   return (
     <div className="relative bg-[var(--color-background-500)] rounded-lg w-full overflow-hidden max-h-screen h-full ">
-      <WatchListHead countMovieInWatchlist={countMovieInWatchlist} />
+      <WatchListHead
+        countMovieInWatchlist={countMovieInWatchlist}
+        watchlistedMovie={watchlistedMovie}
+      />
       <WatchListMovies
         watchlistedMovie={watchlistedMovie}
         onSetWatchlistedMovie={setWatchlistedMovie}
