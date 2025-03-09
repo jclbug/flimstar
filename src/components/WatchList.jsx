@@ -5,14 +5,13 @@ import MovieInfo from "./MovieInfo";
 
 export default function WatchList({
   rate,
-  apiKey,
+  omdbAPI,
   selectedMovieID,
   onSetSelectedMovieID,
   setRate,
 }) {
   const [hideMovieInfo, setHideMovieInfo] = useState("left-full");
   const [watchlistedMovie, setWatchlistedMovie] = useState({});
-  // const [watchlistedMovie, setWatchlistedMovie] = useState([]); // 1
   const [countMovieInWatchlist, setCountMovieInWatchlist] = useState(0);
 
   useEffect(
@@ -21,7 +20,7 @@ export default function WatchList({
         ? setHideMovieInfo("left-0")
         : setHideMovieInfo("left-full");
 
-      setCountMovieInWatchlist(watchlistedMovie.length);
+      setCountMovieInWatchlist(Object.keys(watchlistedMovie).length);
     },
     [selectedMovieID, watchlistedMovie]
   );
@@ -38,7 +37,7 @@ export default function WatchList({
       />
       <MovieInfo
         rate={rate}
-        apiKey={apiKey}
+        omdbAPI={omdbAPI}
         watchlistedMovie={watchlistedMovie}
         hideMovieInfo={hideMovieInfo}
         onSetHideMovieInfo={setHideMovieInfo}

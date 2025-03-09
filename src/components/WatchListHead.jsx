@@ -12,7 +12,7 @@ export default function WatchListHead({
       <div className="flex gap-10 text-xl font-bold ml-auto">
         <p>📽️ {countMovieInWatchlist} Movies</p>
         <p>
-          ⏰{" "}
+          ⏰
           {totalTime < 60
             ? totalTime + " min"
             : (totalTime / 60).toFixed(1) + " hour"}

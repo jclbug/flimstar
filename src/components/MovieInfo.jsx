@@ -6,7 +6,7 @@ import LoadingMsg from "./LoadingMsg";
 import OtherRatings from "./OtherRatings";
 
 export default function MovieInfo({
-  apiKey,
+  omdbAPI,
   watchlistedMovie,
   hideMovieInfo,
   selectedMovieID,
@@ -37,7 +37,7 @@ export default function MovieInfo({
         setPrevID(id);
         setIsLoading(true);
         const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${apiKey}&i=${id}`
+          `https://www.omdbapi.com/?apikey=${omdbAPI}&i=${id}`
         );
         const data = await res.json();
         setMovieData(data);
@@ -114,9 +114,15 @@ export default function MovieInfo({
             >
               <img src="back.svg" alt="back button" className="w-[80%]" />
             </button>
-            <span className="min-w-[230px] h-[350px] flex">
-              <img src={movieData.Poster} alt="" className="w-full h-full" />
-            </span>
+            <span
+              style={{
+                backgroundSize: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundImage: `url(${movieData.Poster}), url("poster-placeholder.png")`,
+              }}
+              className="min-w-[230px] h-[350px] flex"
+            ></span>
             <div className="p-[24px] flex flex-col justify-around">
               <p className="text-4xl font-medium text-(--color-dark)">
                 {movieData.Title}
