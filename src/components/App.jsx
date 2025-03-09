@@ -3,8 +3,10 @@ import Nav from "./Nav";
 import ResultList from "./ResultList";
 import WatchList from "./WatchList";
 
-const omdbAPI = import.meta.env.omdbAPI;
-const themoviedbAPI = import.meta.env.themoviedbAPI;
+const omdbAPI = import.meta.env.VITE_omdbAPI;
+const themoviedbAPI = import.meta.env.VITE_themoviedbAPI;
+
+console.log(omdbAPI);
 
 export default function App() {
   const [totalMovie, setTotalMovie] = useState(0);
@@ -24,11 +26,9 @@ export default function App() {
           onSetSelectedMovieID={setSelectedMovieID}
         />
         <WatchList
-          // rate={rate}
           omdbAPI={omdbAPI}
           selectedMovieID={selectedMovieID}
           onSetSelectedMovieID={setSelectedMovieID}
-          // setRate={setRate}
         />
       </div>
     </div>
