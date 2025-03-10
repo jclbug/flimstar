@@ -11,7 +11,11 @@ export default function WatchList({
   setRate,
 }) {
   const [hideMovieInfo, setHideMovieInfo] = useState("left-full");
-  const [watchlistedMovie, setWatchlistedMovie] = useState({});
+  // const [watchlistedMovie, setWatchlistedMovie] = useState({});
+  const [watchlistedMovie, setWatchlistedMovie] = useState(
+    JSON.parse(localStorage.getItem("watchlistedMovie")) || {}
+  );
+
   const [countMovieInWatchlist, setCountMovieInWatchlist] = useState(0);
 
   useEffect(

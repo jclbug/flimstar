@@ -18,18 +18,17 @@ export default function MovieInfo({
   const [isLoading, setIsLoading] = useState(false);
   const [movieData, setMovieData] = useState({});
   const [prevID, setPrevID] = useState("");
-  const [userRating, setUserRating] = useState({});
   const [rate, setRate] = useState(null);
-  const [isWatchlisted, setIsWatchListed] = useState(false);
-  const [isWatched, setIsWatched] = useState({});
 
-  useEffect(() => {
-    setUserRating(JSON.parse(localStorage.getItem("userRating")) || {});
-    setIsWatched(JSON.parse(localStorage.getItem("isWatched")) || {});
-    onSetWatchlistedMovie(
-      JSON.parse(localStorage.getItem("watchlistedMovie")) || {}
-    );
-  }, []);
+  const [userRating, setUserRating] = useState(
+    () => JSON.parse(localStorage.getItem("userRating")) || {}
+  );
+
+  const [isWatchlisted, setIsWatchListed] = useState(false);
+
+  const [isWatched, setIsWatched] = useState(
+    () => JSON.parse(localStorage.getItem("isWatched")) || {}
+  );
 
   useEffect(
     function () {
@@ -51,20 +50,9 @@ export default function MovieInfo({
 
   useEffect(() => {
     setRate(userRating[movieData.imdbID]);
-    if (userRating && Object.keys(userRating).length > 0) {
-      localStorage.setItem("userRating", JSON.stringify(userRating));
-    }
-
-    if (isWatched && Object.keys(isWatched).length > 0) {
-      localStorage.setItem("isWatched", JSON.stringify(isWatched));
-    }
-
-    if (Object.keys(watchlistedMovie).length > 0) {
-      localStorage.setItem(
-        "watchlistedMovie",
-        JSON.stringify(watchlistedMovie)
-      );
-    }
+    localStorage.setItem("userRating", JSON.stringify(userRating));
+    localStorage.setItem("isWatched", JSON.stringify(isWatched));
+    localStorage.setItem("watchlistedMovie", JSON.stringify(watchlistedMovie));
   }, [watchlistedMovie, userRating, isWatched]);
 
   useEffect(() => {
