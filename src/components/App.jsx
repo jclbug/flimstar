@@ -3,10 +3,8 @@ import Nav from "./Nav";
 import ResultList from "./ResultList";
 import WatchList from "./WatchList";
 
-// const omdbAPI = import.meta.env.VITE_omdbAPI;
-// const themoviedbAPI = import.meta.env.VITE_themoviedbAPI;
-
-console.log(omdbAPI);
+const omdbAPI = "698ee22d";
+const themoviedbAPI = "63cde8fd18a00a64a918a37fe2fc455b";
 
 export default function App() {
   const [totalMovie, setTotalMovie] = useState(0);
