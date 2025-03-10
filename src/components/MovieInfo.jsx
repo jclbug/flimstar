@@ -74,7 +74,7 @@ export default function MovieInfo({
   document.title =
     selectedMovieID === prevID && selectedMovieID !== null
       ? "Movie | " + movieData.Title
-      : "Flimstr";
+      : "Flimstar";
 
   function handleAddRemoveWatchlist() {
     setIsWatchListed(!isWatchlisted);

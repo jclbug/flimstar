@@ -3,8 +3,8 @@ import Nav from "./Nav";
 import ResultList from "./ResultList";
 import WatchList from "./WatchList";
 
-const omdbAPI = import.meta.env.VITE_omdbAPI;
-const themoviedbAPI = import.meta.env.VITE_themoviedbAPI;
+// const omdbAPI = import.meta.env.VITE_omdbAPI;
+// const themoviedbAPI = import.meta.env.VITE_themoviedbAPI;
 
 console.log(omdbAPI);
 
