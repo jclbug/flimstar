@@ -1,10 +1,36 @@
+import { useEffect } from "react";
 import Movie from "./Movie";
 
 export default function WatchListMovies({
+  movieData,
+  prevID,
   watchlistedMovie,
+  selectedMovieID,
+  omdbAPI,
   onSetWatchlistedMovie,
+  onSetSelectedMovieID,
+  onSetPrevID,
+  onSetIsLoading,
+  onSetMovieData,
 }) {
-  console.log(Object.keys(watchlistedMovie));
+  useEffect(
+    function () {
+      async function fetchMovieDetails(id) {
+        onSetPrevID(id);
+        onSetIsLoading(true);
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=${omdbAPI}&i=${id}`
+        );
+        const data = await res.json();
+
+        onSetMovieData(data);
+        onSetIsLoading(false);
+      }
+
+      fetchMovieDetails(selectedMovieID);
+    },
+    [selectedMovieID ? selectedMovieID : prevID]
+  );
 
   return (
     <ul className="bg-[var(--color-background-500)] rounded-lg w-full overflow-scroll scrollbar-hidden h-[88%]">
@@ -17,6 +43,12 @@ export default function WatchListMovies({
           <Movie
             key={watchlistedMovie[movieID].imdbID}
             movie={watchlistedMovie[movieID]}
+            callBackFun={(e) => {
+              if (e.target.dataset.close !== "close")
+                onSetSelectedMovieID(
+                  movieData.imdbID !== selectedMovieID ? movieID : null
+                );
+            }}
           >
             <img
               src="close.svg"
@@ -25,6 +57,7 @@ export default function WatchListMovies({
                 onSetWatchlistedMovie(movies);
               }}
               className="w-full"
+              data-close="close"
             />
           </Movie>
         ))

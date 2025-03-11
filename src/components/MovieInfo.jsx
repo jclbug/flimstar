@@ -6,6 +6,9 @@ import LoadingMsg from "./LoadingMsg";
 import OtherRatings from "./OtherRatings";
 
 export default function MovieInfo({
+  movieData,
+  isLoading,
+  prevID,
   omdbAPI,
   watchlistedMovie,
   hideMovieInfo,
@@ -13,11 +16,11 @@ export default function MovieInfo({
   onSetHideMovieInfo,
   onSetSelectedMovieID,
   onSetWatchlistedMovie,
+  onSetPrevID,
+  onSetIsLoading,
+  onSetMovieData,
 }) {
   const [hover, setHover] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [movieData, setMovieData] = useState({});
-  const [prevID, setPrevID] = useState("");
   const [rate, setRate] = useState(null);
 
   const [userRating, setUserRating] = useState(
@@ -33,14 +36,15 @@ export default function MovieInfo({
   useEffect(
     function () {
       async function fetchMovieDetails(id) {
-        setPrevID(id);
-        setIsLoading(true);
+        onSetPrevID(id);
+        onSetIsLoading(true);
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${omdbAPI}&i=${id}`
         );
         const data = await res.json();
-        setMovieData(data);
-        setIsLoading(false);
+
+        onSetMovieData(data);
+        onSetIsLoading(false);
       }
 
       fetchMovieDetails(selectedMovieID);

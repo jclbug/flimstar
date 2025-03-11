@@ -10,8 +10,10 @@ export default function WatchList({
   onSetSelectedMovieID,
   setRate,
 }) {
+  const [movieData, setMovieData] = useState({});
+  const [prevID, setPrevID] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [hideMovieInfo, setHideMovieInfo] = useState("left-full");
-  // const [watchlistedMovie, setWatchlistedMovie] = useState({});
   const [watchlistedMovie, setWatchlistedMovie] = useState(
     JSON.parse(localStorage.getItem("watchlistedMovie")) || {}
   );
@@ -36,10 +38,23 @@ export default function WatchList({
         watchlistedMovie={watchlistedMovie}
       />
       <WatchListMovies
+        movieData={movieData}
+        isLoading={isLoading}
+        prevID={prevID}
+        onSetPrevID={setPrevID}
+        omdbAPI={omdbAPI}
+        selectedMovieID={selectedMovieID}
         watchlistedMovie={watchlistedMovie}
         onSetWatchlistedMovie={setWatchlistedMovie}
+        onSetSelectedMovieID={onSetSelectedMovieID}
+        onSetIsLoading={setIsLoading}
+        onSetMovieData={setMovieData}
       />
       <MovieInfo
+        movieData={movieData}
+        isLoading={isLoading}
+        prevID={prevID}
+        onSetPrevID={setPrevID}
         rate={rate}
         omdbAPI={omdbAPI}
         watchlistedMovie={watchlistedMovie}
@@ -49,6 +64,8 @@ export default function WatchList({
         onSetSelectedMovieID={onSetSelectedMovieID}
         onSetWatchlistedMovie={setWatchlistedMovie}
         setRate={setRate}
+        onSetIsLoading={setIsLoading}
+        onSetMovieData={setMovieData}
       />
     </div>
   );

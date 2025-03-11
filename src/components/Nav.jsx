@@ -1,7 +1,10 @@
 export default function Nav({ onSetQuery, totalMovie }) {
   return (
-    <nav className="flex justify-between max-w-[2200px] w-full ml-auto mr-auto bg-(--color-dark) items-center text-(--color-background-500) font-bold text-2xl pt-[16px] pb-[16px] pl-[24px] pr-[24px] ">
-      <p>Flimstr</p>
+    <nav className="flex justify-between max-w-[2200px] w-full ml-auto mr-auto bg-(--color-dark) items-center text-(--color-background-500) font-bold text-2xl pt-[16px] pb-[16px] pl-[48px] pr-[48px] ">
+      <div className="flex items-center">
+        <img src="logo3.svg" className="w-[48px]" />
+        <p className="mt-[18px] ml-[-15px]">Flimstr</p>
+      </div>
       <input
         onChange={(e) => onSetQuery(e.target.value)}
         type="text"

@@ -1,16 +1,7 @@
-export default function Movie({
-  children,
-  selectedMovieID,
-  movie,
-  onSetSelectedMovieID,
-}) {
+export default function Movie({ children, movie, callBackFun }) {
   return (
     <li
-      onClick={() => {
-        onSetSelectedMovieID(
-          movie.imdbID !== selectedMovieID ? movie.imdbID : null
-        );
-      }}
+      onClick={callBackFun}
       className="flex gap-8 p-8 border-b border-(--color-dark) cursor-pointer hover:bg-[#003d47] duration-[200ms] last:border-0 items-center"
     >
       <span

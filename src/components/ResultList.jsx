@@ -26,8 +26,6 @@ export default function ResultList({
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-
         setRandomMovieName(data.results[randomNum].title);
       });
   }
@@ -54,7 +52,6 @@ export default function ResultList({
           const data = await res.json();
 
           if (data.Response === "False" && !query) {
-            console.log("hello");
             randomMovie();
           } else if (data.Response === "False") {
             setMovieNotFound(true);
@@ -79,10 +76,13 @@ export default function ResultList({
       {movieArray &&
         movieArray.map((film) => (
           <Movie
-            selectedMovieID={selectedMovieID}
             movie={film}
             key={film.imdbID}
-            onSetSelectedMovieID={onSetSelectedMovieID}
+            callBackFun={() =>
+              onSetSelectedMovieID(
+                film.imdbID !== selectedMovieID ? film.imdbID : null
+              )
+            }
           />
         ))}
 
