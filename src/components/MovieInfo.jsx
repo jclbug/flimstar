@@ -22,6 +22,7 @@ export default function MovieInfo({
 }) {
   const [hover, setHover] = useState("");
   const [rate, setRate] = useState(null);
+  const [trailerID, setTrailerID] = useState("");
 
   const [userRating, setUserRating] = useState(
     () => JSON.parse(localStorage.getItem("userRating")) || {}
@@ -32,6 +33,19 @@ export default function MovieInfo({
   const [isWatched, setIsWatched] = useState(
     () => JSON.parse(localStorage.getItem("isWatched")) || {}
   );
+
+  function handleTrailer(movieTitle, year) {
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+      `${movieTitle} ${year}`
+    )}%20trailer&key=AIzaSyBkUGTjFSohYoAY9sWrPIZJnklscrl90WI`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setTrailerID(data.items[0].id.videoId);
+      })
+      .catch((e) => console.error(e));
+  }
 
   useEffect(
     function () {
@@ -45,6 +59,7 @@ export default function MovieInfo({
 
         onSetMovieData(data);
         onSetIsLoading(false);
+        handleTrailer(data.Title, data.Year);
       }
 
       fetchMovieDetails(selectedMovieID);
@@ -96,56 +111,78 @@ export default function MovieInfo({
         <LoadingMsg message={"Loading..."} />
       ) : (
         <>
-          <div className="flex gap-5 relative bg-(--color-background-100)">
+          <div className="flex gap-[24px] items-center bg-(--color-background-100)">
             <button
               onClick={() => {
                 onSetHideMovieInfo("left-full");
                 onSetSelectedMovieID(null);
               }}
-              className="flex items-center justify-center rounded-[5rem] rotate-y-180 absolute top-[10px] left-[10px] bg-[#ffffff8c] cursor-pointer w-[60px] h-[60px]"
+              className="flex items-center justify-center z-2 rounded-[5rem] rotate-y-180 absolute top-[10px] left-[10px] bg-[#ffffff8c] cursor-pointer w-[60px] h-[60px]"
             >
               <img src="back.svg" alt="back button" className="w-[80%]" />
             </button>
-            <span
-              style={{
-                backgroundSize: "100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundImage: `url(${movieData.Poster}), url("poster-placeholder.png")`,
-              }}
-              className="min-w-[230px] h-[350px] flex"
-            ></span>
-            <div className="p-[24px] flex flex-col justify-around">
-              <p className="text-4xl font-medium text-(--color-dark)">
-                {movieData.Title}
-              </p>
-              <MovieSubData
-                heading="Released Date: "
-                data={movieData.Released}
-                emoji="🗓️"
-              />
-              <MovieSubData
-                heading="Run Time: "
-                data={movieData.Runtime}
-                emoji="⏰"
-              />
-              <MovieSubData
-                heading="IMDB Rating:  "
-                data={movieData.imdbRating}
-                emoji="⭐"
-              />
-              <MovieSubData
-                heading="IMDB Votes:  "
-                data={movieData.imdbVotes}
-                emoji="👦🏼"
-              />
-              <p className="text-lg text-(--heading)">
-                <span className="font-bold">Genre: </span>{" "}
-                {movieData.Genre?.split(",").join(" 𐄁")}
-              </p>
+            <div className="flex gap-5 z-1 relative ">
+              <span
+                style={{
+                  backgroundSize: "100%",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                  backgroundImage: `url(${movieData.Poster}), url("poster-placeholder.png")`,
+                }}
+                className="min-w-[230px] h-[350px] flex"
+              ></span>
+              <div className="p-[24px] flex flex-col justify-around">
+                <p className="text-4xl font-medium text-(--color-dark)">
+                  {movieData.Title}
+                </p>
+                <MovieSubData
+                  heading="Released Date: "
+                  data={movieData.Released}
+                  emoji="🗓️"
+                />
+                <MovieSubData
+                  heading="Run Time: "
+                  data={movieData.Runtime}
+                  emoji="⏰"
+                />
+                <MovieSubData
+                  heading="IMDB Rating:  "
+                  data={movieData.imdbRating}
+                  emoji="⭐"
+                />
+                <MovieSubData
+                  heading="IMDB Votes:  "
+                  data={movieData.imdbVotes}
+                  emoji="👦🏼"
+                />
+                <p className="text-lg text-(--heading)">
+                  <span className="font-bold">Genre: </span>{" "}
+                  {movieData.Genre?.split(",").join(" 𐄁")}
+                </p>
+              </div>
             </div>
+            {/* <div className="flex justify-center grow">
+              <iframe
+                className="rounded-[10px]"
+                width="400"
+                height="225"
+                src={`https://www.youtube.com/embed/${trailerID}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div> */}
           </div>
-          <div className="flex items-center justify-around  pl-[24px] pr-[24px]">
+          <div className="flex justify-center grow">
+            <iframe
+              className="rounded-[10px]"
+              width="800"
+              height="450"
+              src={`https://www.youtube.com/embed/${trailerID}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="flex items-center justify-evenly  pl-[24px] pr-[24px]">
             <div className="p-[24px] pl-[48px] pr-[48px] rounded-xl bg-(--color-background-100)">
               <div
                 onMouseLeave={() => setHover(0)}
