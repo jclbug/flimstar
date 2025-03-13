@@ -20,6 +20,7 @@ export default function MovieInfo({
   onSetIsLoading,
   onSetMovieData,
 }) {
+  const trailer = import.meta.env.VITE_Trailer;
   const [hover, setHover] = useState("");
   const [rate, setRate] = useState(null);
   const [trailerID, setTrailerID] = useState("");
@@ -37,7 +38,7 @@ export default function MovieInfo({
   function handleTrailer(movieTitle, year) {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
       `${movieTitle} ${year}`
-    )}%20trailer&key=AIzaSyBkUGTjFSohYoAY9sWrPIZJnklscrl90WI`;
+    )}%20trailer&key=${trailer}`;
 
     fetch(url)
       .then((res) => res.json())
