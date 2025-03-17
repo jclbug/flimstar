@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import Movie from "./Movie";
+import { config } from "./config";
+const { trailer } = config;
 
 export default function WatchListMovies({
   movieData,
@@ -12,7 +14,22 @@ export default function WatchListMovies({
   onSetPrevID,
   onSetIsLoading,
   onSetMovieData,
+  onSetTrailerID,
 }) {
+  function handleTrailer(movieTitle, year) {
+    if (!movieTitle) return;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+      `${movieTitle} ${year}`
+    )}%20trailer&key=${trailer}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        onSetTrailerID(data.items[0].id.videoId);
+      })
+      .catch((e) => console.error(e));
+  }
+
   useEffect(
     function () {
       async function fetchMovieDetails(id) {
@@ -25,6 +42,7 @@ export default function WatchListMovies({
 
         onSetMovieData(data);
         onSetIsLoading(false);
+        handleTrailer(data.Title, data.Year);
       }
 
       fetchMovieDetails(selectedMovieID);

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Movie from "./Movie";
 import LoadingMsg from "./LoadingMsg";
+import { config } from "./config";
+const { omdbAPI: omdbAPI, themoviedbAPI: themoviedbAPI } = config;
 
 export default function ResultList({
-  themoviedbAPI,
-  omdbAPI,
   selectedMovieID,
   query,
   onSetTotalMovie,

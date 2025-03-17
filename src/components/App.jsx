@@ -2,9 +2,8 @@ import { useState } from "react";
 import Nav from "./Nav";
 import ResultList from "./ResultList";
 import WatchList from "./WatchList";
-
-const omdbAPI = import.meta.env.VITE_OMDB_API;
-const themoviedbAPI = import.meta.env.VITE_THEMOVIEDB_API;
+import { config } from "./config";
+const { omdbAPI: omdbAPI, themoviedbAPI: themoviedbAPI } = config;
 
 export default function App() {
   const [totalMovie, setTotalMovie] = useState(0);

@@ -6,24 +6,19 @@ import LoadingMsg from "./LoadingMsg";
 import OtherRatings from "./OtherRatings";
 
 export default function MovieInfo({
+  trailerID,
   movieData,
   isLoading,
   prevID,
-  omdbAPI,
   watchlistedMovie,
   hideMovieInfo,
   selectedMovieID,
   onSetHideMovieInfo,
   onSetSelectedMovieID,
   onSetWatchlistedMovie,
-  onSetPrevID,
-  onSetIsLoading,
-  onSetMovieData,
 }) {
-  const trailer = import.meta.env.VITE_Trailer;
   const [hover, setHover] = useState("");
   const [rate, setRate] = useState(null);
-  const [trailerID, setTrailerID] = useState("");
 
   const [userRating, setUserRating] = useState(
     () => JSON.parse(localStorage.getItem("userRating")) || {}
@@ -33,39 +28,6 @@ export default function MovieInfo({
 
   const [isWatched, setIsWatched] = useState(
     () => JSON.parse(localStorage.getItem("isWatched")) || {}
-  );
-
-  function handleTrailer(movieTitle, year) {
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-      `${movieTitle} ${year}`
-    )}%20trailer&key=${trailer}`;
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setTrailerID(data.items[0].id.videoId);
-      })
-      .catch((e) => console.error(e));
-  }
-
-  useEffect(
-    function () {
-      async function fetchMovieDetails(id) {
-        onSetPrevID(id);
-        onSetIsLoading(true);
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${omdbAPI}&i=${id}`
-        );
-        const data = await res.json();
-
-        onSetMovieData(data);
-        onSetIsLoading(false);
-        handleTrailer(data.Title, data.Year);
-      }
-
-      fetchMovieDetails(selectedMovieID);
-    },
-    [selectedMovieID ? selectedMovieID : prevID]
   );
 
   useEffect(() => {
@@ -162,16 +124,6 @@ export default function MovieInfo({
                 </p>
               </div>
             </div>
-            {/* <div className="flex justify-center grow">
-              <iframe
-                className="rounded-[10px]"
-                width="400"
-                height="225"
-                src={`https://www.youtube.com/embed/${trailerID}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div> */}
           </div>
           <div className="flex justify-center grow">
             <iframe
@@ -183,11 +135,11 @@ export default function MovieInfo({
               allowFullScreen
             ></iframe>
           </div>
-          <div className="flex items-center justify-evenly  pl-[24px] pr-[24px]">
-            <div className="p-[24px] pl-[48px] pr-[48px] rounded-xl bg-(--color-background-100)">
+          <div className="flex items-center flex-col flex-wrap gap-[48px]  pl-[35px] pr-[35px]">
+            <div className="p-[24px] pl-[48px] pr-[48px] rounded-xl">
               <div
                 onMouseLeave={() => setHover(0)}
-                className="flex items-center gap-1"
+                className="flex items-center gap-1 "
               >
                 {Array.from({ length: 10 }, (_, i) => (
                   <Star
@@ -200,15 +152,15 @@ export default function MovieInfo({
                     setUserRating={setUserRating}
                   />
                 ))}
-                <p className="ml-[10px] text-2xl font-bold w-[25px]">
+                <p className="flex items-center justify-center ml-[10px] text-xl font-bold w-[25px] h-[30px]">
                   {hover || rate}
                 </p>
               </div>
             </div>
-            <div className="text-(--heading) flex flex-col gap-[5px]">
+            <div className="w-full max-w-[600px] text-(--heading) flex gap-[10px] flex-wrap grow">
               <button
                 onClick={() => handleAddRemoveWatchlist()}
-                className={`${
+                className={`grow ${
                   watchlistedMovie[movieData.imdbID]
                     ? "bg-(--selected) text-(--color-background-500)"
                     : "bg-(--color-background-100)"
@@ -227,7 +179,7 @@ export default function MovieInfo({
                     setIsWatched(obj);
                   }
                 }}
-                className={` ${
+                className={`grow ${
                   isWatched[movieData.imdbID]
                     ? "bg-(--selected) text-(--color-background-500)"
                     : "bg-(--color-background-100)"
@@ -238,7 +190,7 @@ export default function MovieInfo({
             </div>
           </div>
           <div className="text-xl flex flex-col gap-[48px] pl-[64px] pr-[64px] mb-[48px] border-t-(--color-dark) border-t-1">
-            <div className="flex gap-[24px] mt-[48px] mb-[48px]">
+            <div className="flex flex-wrap gap-[24px] justify-between mt-[64px] mb-[48px]">
               {movieData.Ratings?.map((rating) => (
                 <OtherRatings
                   rating={rating}
@@ -255,7 +207,7 @@ export default function MovieInfo({
             <Filmmakers title={"Languages: "} maker={movieData.Language} />
             <Filmmakers title={"Country: "} maker={movieData.Country} />
 
-            <div className="text-xl h-full">
+            <div className="text-xl h-full mb-[24px]">
               <p className="text-3xl font-bold text-(--heading) mb-[16px]">
                 Movie Plot
               </p>

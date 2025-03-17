@@ -2,7 +2,7 @@ export default function Movie({ children, movie, callBackFun }) {
   return (
     <li
       onClick={callBackFun}
-      className="flex gap-8 p-8 border-b border-(--color-dark) cursor-pointer hover:bg-[#003d47] duration-[200ms] last:border-0 items-center"
+      className="flex gap-8 p-8  cursor-pointer hover:bg-[#003d47] duration-[200ms]  items-center"
     >
       <span
         style={{
