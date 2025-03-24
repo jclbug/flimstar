@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import Movie from "./Movie";
 import { config } from "./config";
+import { Reorder } from "framer-motion";
+
 const { trailer } = config;
 
 export default function WatchListMovies({
-  movieData,
   prevID,
   watchlistedMovie,
   selectedMovieID,
@@ -57,28 +58,44 @@ export default function WatchListMovies({
           Add some movies to your watchlist
         </p>
       ) : (
-        Object.keys(watchlistedMovie).map((movieID) => (
-          <Movie
-            key={watchlistedMovie[movieID].imdbID}
-            movie={watchlistedMovie[movieID]}
-            callBackFun={(e) => {
-              if (e.target.dataset.close !== "close")
-                onSetSelectedMovieID(
-                  movieData.imdbID !== selectedMovieID ? movieID : null
-                );
-            }}
-          >
-            <img
-              src="close.svg"
-              onClick={() => {
-                const { [movieID]: _, ...movies } = watchlistedMovie;
-                onSetWatchlistedMovie(movies);
-              }}
-              className="w-full"
-              data-close="close"
-            />
-          </Movie>
-        ))
+        <Reorder.Group
+          values={watchlistedMovie}
+          onReorder={onSetWatchlistedMovie}
+        >
+          {watchlistedMovie.map((movie) => (
+            <Reorder.Item value={movie} key={movie.imdbID}>
+              <Movie
+                key={movie.imdbID}
+                movie={movie}
+                openMovie={(e) => {
+                  if (e.target.dataset.close !== "close")
+                    onSetSelectedMovieID(
+                      movie.imdbID !== selectedMovieID ? movie.imdbID : null
+                    );
+                }}
+              >
+                <span className="inline-block w-[24px] ml-[24px]">
+                  <img
+                    src="drag.svg"
+                    alt="drag button"
+                    className="h-full w-full pointer-events-none"
+                  />
+                </span>
+                <img
+                  src="close.svg"
+                  onClick={() => {
+                    const movies = watchlistedMovie.filter(
+                      (m) => m.imdbID !== movie.imdbID
+                    );
+                    onSetWatchlistedMovie(movies);
+                  }}
+                  className="w-full"
+                  data-close="close"
+                />
+              </Movie>
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
       )}
     </ul>
   );

@@ -17,7 +17,7 @@ export default function WatchList({
   const [trailerID, setTrailerID] = useState("");
 
   const [watchlistedMovie, setWatchlistedMovie] = useState(
-    JSON.parse(localStorage.getItem("watchlistedMovie")) || {}
+    JSON.parse(localStorage.getItem("watchlistedMovie")) || []
   );
 
   const [countMovieInWatchlist, setCountMovieInWatchlist] = useState(0);
@@ -40,7 +40,6 @@ export default function WatchList({
         watchlistedMovie={watchlistedMovie}
       />
       <WatchListMovies
-        movieData={movieData}
         prevID={prevID}
         onSetPrevID={setPrevID}
         omdbAPI={omdbAPI}

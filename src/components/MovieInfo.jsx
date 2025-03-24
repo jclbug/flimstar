@@ -48,8 +48,9 @@ export default function MovieInfo({
 
   function handleAddRemoveWatchlist() {
     setIsWatchListed(!isWatchlisted);
+    console.log(watchlistedMovie);
 
-    if (!watchlistedMovie[movieData.imdbID]) {
+    if (!watchlistedMovie.find((m) => m.imdbID === movieData.imdbID)) {
       const movie = {
         Title: movieData.Title,
         Rating: movieData.imdbRating,
@@ -59,9 +60,11 @@ export default function MovieInfo({
         imdbID: movieData.imdbID,
         Poster: movieData.Poster,
       };
-      onSetWatchlistedMovie({ ...watchlistedMovie, [movieData.imdbID]: movie });
+      onSetWatchlistedMovie([...watchlistedMovie, movie]);
     } else {
-      const { [movieData.imdbID]: _, ...movies } = watchlistedMovie;
+      const movies = watchlistedMovie.filter(
+        (m) => m.imdbID != movieData.imdbID
+      );
       onSetWatchlistedMovie(movies);
     }
   }
@@ -161,12 +164,12 @@ export default function MovieInfo({
               <button
                 onClick={() => handleAddRemoveWatchlist()}
                 className={`grow ${
-                  watchlistedMovie[movieData.imdbID]
+                  watchlistedMovie.find((m) => m.imdbID === movieData.imdbID)
                     ? "bg-(--selected) text-(--color-background-500)"
                     : "bg-(--color-background-100)"
                 }  pl-[24px] pr-[24px] pt-[7px] pb-[7px]  rounded-[5px] text-lg font-bold cursor-pointer hover:bg-(--selected) hover:text-(--color-background-500) duration-[200ms]`}
               >
-                {watchlistedMovie[movieData.imdbID]
+                {watchlistedMovie.find((m) => m.imdbID === movieData.imdbID)
                   ? "Watchlisted"
                   : "Add to watchlist"}
               </button>

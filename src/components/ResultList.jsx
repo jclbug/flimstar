@@ -78,7 +78,7 @@ export default function ResultList({
           <Movie
             movie={film}
             key={film.imdbID}
-            callBackFun={() =>
+            openMovie={() =>
               onSetSelectedMovieID(
                 film.imdbID !== selectedMovieID ? film.imdbID : null
               )
