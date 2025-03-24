@@ -21,4 +21,4 @@ FlimStar is a movie discovery and management application that allows users to se
 - **OMDb API**: Used to fetch detailed information about movies (including plot, cast, year of release, ratings, etc.).
 - **TMDb API**: Provides random movie recommendations on each page refresh for discovering new movies.
 
-- Take a look: <a href="https://flimstar.netlify.app/">Flimstar</a>
+- Take a look: <a href="https://flimstar.netlify.app/" target="_blank">Flimstar</a>
