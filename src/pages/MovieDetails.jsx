@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Star, Clock, Calendar, Play } from "lucide-react";
+import { Star, Clock, Calendar, Play, Film } from "lucide-react";
 import MovieCard from "../components/MovieCard";
 import TrailerModal from "../components/TrailerModal";
 import WatchlistButton from "../components/WatchlistButton";
+import MoviePlayerModal from "../components/MoviePlayerModal";
 
 function MovieDetails() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ function MovieDetails() {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showTrailer, setShowTrailer] = useState(false);
+  const [showMoviePlayer, setShowMoviePlayer] = useState(false);
   const [trailerKey, setTrailerKey] = useState(null);
 
   useEffect(() => {
@@ -143,14 +145,16 @@ function MovieDetails() {
           </div>
 
           {/* Details */}
-          <div className="flex-grow">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-3xl md:text-5xl font-bold">{movie.title}</h1>
+          <div className="flex-grow overflow-hidden">
+            <div className="flex flex-wrap items-center justify-between mb-2 gap-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold break-words">
+                {movie.title}
+              </h1>
               <WatchlistButton
                 movie={movieForWatchlist}
                 size="large"
                 showText={true}
-                className="ml-4"
+                className="flex-shrink-0"
               />
             </div>
 
@@ -227,16 +231,28 @@ function MovieDetails() {
               </div>
             )}
 
-            {/* Trailer Button */}
-            {trailerKey && (
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4">
+              {/* Watch Movie Button */}
               <button
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center"
-                onClick={() => setShowTrailer(true)}
+                onClick={() => setShowMoviePlayer(true)}
               >
-                <Play className="mr-2 h-4 w-4" />
-                Watch Trailer
+                <Film className="mr-2 h-4 w-4" />
+                Watch Movie
               </button>
-            )}
+
+              {/* Trailer Button */}
+              {trailerKey && (
+                <button
+                  className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center"
+                  onClick={() => setShowTrailer(true)}
+                >
+                  <Play className="mr-2 h-4 w-4" />
+                  Watch Trailer
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -265,6 +281,14 @@ function MovieDetails() {
         <TrailerModal
           videoId={trailerKey}
           onClose={() => setShowTrailer(false)}
+        />
+      )}
+
+      {/* Movie Player Modal */}
+      {showMoviePlayer && (
+        <MoviePlayerModal
+          tmdbId={movie.id}
+          onClose={() => setShowMoviePlayer(false)}
         />
       )}
     </div>
